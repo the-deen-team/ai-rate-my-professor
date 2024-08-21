@@ -12,7 +12,7 @@ export default function Home() {
       alignItems="center"
       justifyContent="center" m={0}
     >
-      <Typography variant="h3">AI Rate My Professor</Typography>
+      <Typography variant="h3">AI Rate My Professor hi</Typography>
     </Box>
   );
 }
