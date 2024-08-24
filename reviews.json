@@ -1,0 +1,125 @@
+{
+    "reviews": [
+      {
+        "professor": "Dr. Emily Watson",
+        "subject": "Computer Science",
+        "stars": 5,
+        "review": "Dr. Watson is an amazing professor! Her lectures are clear, and she is always willing to help outside of class."
+      },
+      {
+        "professor": "Prof. John Miller",
+        "subject": "Mathematics",
+        "stars": 4,
+        "review": "Prof. Miller explains concepts well, but his exams can be challenging. Be prepared to study hard."
+      },
+      {
+        "professor": "Dr. Sarah Lee",
+        "subject": "Physics",
+        "stars": 3,
+        "review": "Dr. Lee knows her material, but her teaching style is a bit dry. Labs are very informative though."
+      },
+      {
+        "professor": "Prof. Mark Brown",
+        "subject": "Chemistry",
+        "stars": 2,
+        "review": "Prof. Brown is knowledgeable, but his lectures are disorganized and hard to follow."
+      },
+      {
+        "professor": "Dr. Lisa Carter",
+        "subject": "Biology",
+        "stars": 4,
+        "review": "Dr. Carter is passionate about biology and makes the classes engaging. The workload is manageable."
+      },
+      {
+        "professor": "Prof. James Wilson",
+        "subject": "English Literature",
+        "stars": 5,
+        "review": "Prof. Wilson is the best! He makes literature come alive and provides great feedback on essays."
+      },
+      {
+        "professor": "Dr. Karen Johnson",
+        "subject": "History",
+        "stars": 3,
+        "review": "Dr. Johnson has a deep understanding of history, but her lectures can be monotonous."
+      },
+      {
+        "professor": "Prof. Robert Moore",
+        "subject": "Philosophy",
+        "stars": 4,
+        "review": "Prof. Moore encourages critical thinking and class discussions, but the readings are heavy."
+      },
+      {
+        "professor": "Dr. Amanda Clark",
+        "subject": "Sociology",
+        "stars": 5,
+        "review": "Dr. Clark is inspiring! She connects sociological theories to real-world examples effectively."
+      },
+      {
+        "professor": "Prof. William Taylor",
+        "subject": "Economics",
+        "stars": 2,
+        "review": "Prof. Taylor's lectures are difficult to understand, and he doesn't provide much help during office hours."
+      },
+      {
+        "professor": "Dr. Susan Davis",
+        "subject": "Political Science",
+        "stars": 4,
+        "review": "Dr. Davis is very knowledgeable and provides detailed feedback on assignments, but her exams are tough."
+      },
+      {
+        "professor": "Prof. Richard Adams",
+        "subject": "Psychology",
+        "stars": 3,
+        "review": "Prof. Adams is decent, but his lectures are sometimes confusing and hard to follow."
+      },
+      {
+        "professor": "Dr. Michael Thompson",
+        "subject": "Environmental Science",
+        "stars": 5,
+        "review": "Dr. Thompson is fantastic! He is passionate about the environment and makes the subject very interesting."
+      },
+      {
+        "professor": "Prof. Jennifer Martinez",
+        "subject": "Art History",
+        "stars": 4,
+        "review": "Prof. Martinez is very knowledgeable, and her classes are enjoyable, but there's a lot of reading required."
+      },
+      {
+        "professor": "Dr. David Rodriguez",
+        "subject": "Engineering",
+        "stars": 2,
+        "review": "Dr. Rodriguez's lectures are hard to follow, and he doesn't provide enough examples for complex topics."
+      },
+      {
+        "professor": "Prof. Elizabeth Green",
+        "subject": "Music Theory",
+        "stars": 5,
+        "review": "Prof. Green is amazing! She makes music theory easy to understand and is always supportive."
+      },
+      {
+        "professor": "Dr. Charles Harris",
+        "subject": "Statistics",
+        "stars": 3,
+        "review": "Dr. Harris knows his stuff, but his lectures are too fast-paced and hard to keep up with."
+      },
+      {
+        "professor": "Prof. Patricia Lewis",
+        "subject": "Business",
+        "stars": 4,
+        "review": "Prof. Lewis is great! She brings real-world business experience to the classroom, but her assignments can be tough."
+      },
+      {
+        "professor": "Dr. Thomas Young",
+        "subject": "Law",
+        "stars": 2,
+        "review": "Dr. Young's lectures are dry, and he doesn't engage much with students. The material is also very dense."
+      },
+      {
+        "professor": "Prof. Barbara White",
+        "subject": "Anthropology",
+        "stars": 5,
+        "review": "Prof. White is incredible! She makes anthropology fascinating and always encourages student participation."
+      }
+    ]
+  }
+  
