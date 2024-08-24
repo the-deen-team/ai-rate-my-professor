@@ -8,8 +8,9 @@ This project aims to build a system that rates professors based on AI-driven ins
 
 Before you begin, ensure you have met the following requirements:
 
+- [Python](https://www.python.org/downloads/) installed on your machine.
 - [Miniconda](https://docs.anaconda.com/miniconda/) installed on your machine.
-- Node.js and npm installed.
+- [Node.js](https://nodejs.org/) and npm installed.
 
 ### 1. Pull the Latest Changes
 
@@ -29,7 +30,7 @@ npm install
 
 ### 3. Set Up Python Environment
 
-- Make sure [Miniconda](https://docs.anaconda.com/miniconda/) is installed.
+- Make sure [Python](https://www.python.org/downloads/) and [Miniconda](https://docs.anaconda.com/miniconda/) are installed.
 - Activate the `rag` environment:
 
 ```bash
@@ -37,12 +38,6 @@ conda activate rag
 ```
 
 ### 4. Install Python Dependencies
-
-- Install the pip-chill package, which helps manage dependencies:
-
-```bash
-pip install pip-chill
-```
 
 - Install the required Python packages using the `requirements.txt` file:
 
@@ -57,5 +52,5 @@ pip install -r requirements.txt
 
 ## Troubleshooting
 
-- If you encounter any issues with environment setup or dependencies, make sure your Miniconda installation is up to date and that the correct environment is activated.
+- If you encounter any issues with environment setup or dependencies, make sure your Python, Miniconda, and Node.js installations are up to date and that the correct environment is activated.
 - If Node.js dependencies fail to install, ensure that your node and npm versions are compatible with the project requirements.
