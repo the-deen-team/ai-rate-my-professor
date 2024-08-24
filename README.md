@@ -44,10 +44,10 @@ conda activate rag
 pip install pip-chill
 ```
 
-- Generate the requirements.txt file:
+- Install the required Python packages using the `requirements.txt` file:
 
 ```bash
-pip-chill > requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Additional Notes
