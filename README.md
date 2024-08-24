@@ -31,6 +31,12 @@ npm install
 ### 3. Set Up Python Environment
 
 - Make sure [Python](https://www.python.org/downloads/) and [Miniconda](https://docs.anaconda.com/miniconda/) are installed.
+- Create the `rag` environment:
+
+```bash
+conda create -n rag python=3.10.4
+```
+
 - Activate the `rag` environment:
 
 ```bash
