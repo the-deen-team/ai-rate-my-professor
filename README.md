@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Rate My Professor
+
+This project aims to build a system that rates professors based on AI-driven insights. The project uses both Node.js for the frontend and Python for backend processes.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- [Miniconda](https://docs.anaconda.com/miniconda/) installed on your machine.
+- Node.js and npm installed.
+
+### 1. Pull the Latest Changes
+
+Before doing anything, ensure you have the latest code from the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git pull origin main
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Node.js Dependencies
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+After pulling the latest code, install the required Node.js packages:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+npm install
+```
 
-## Learn More
+### 3. Set Up Python Environment
 
-To learn more about Next.js, take a look at the following resources:
+- Make sure [Miniconda](https://docs.anaconda.com/miniconda/) is installed.
+- Activate the `rag` environment:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+conda activate rag
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 4. Install Python Dependencies
 
-## Deploy on Vercel
+- Install the pip-chill package, which helps manage dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pip install pip-chill
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Generate the requirements.txt file:
+
+```bash
+pip-chill > requirements.txt
+```
+
+### Additional Notes
+
+- Ensure that your Python environment is correctly set up before proceeding with any Python-related tasks.
+- Always remember to run npm install and pip install -r requirements.txt after pulling the latest changes to keep your environment up to date.
+
+## Troubleshooting
+
+- If you encounter any issues with environment setup or dependencies, make sure your Miniconda installation is up to date and that the correct environment is activated.
+- If Node.js dependencies fail to install, ensure that your node and npm versions are compatible with the project requirements.
