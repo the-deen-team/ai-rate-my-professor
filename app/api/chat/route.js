@@ -70,11 +70,11 @@ export async function POST(req) {
   const lastMessage = data[data.length - 1];
   const lastMessageContent = lastMessage.content + resultString;
   const lastDataWithoutLastMessage = data.slice(0, data.length - 1);
-  const completion = await openai.chat.completions({
+  const completion = await openai.chat.completions.create({
     messages: [
       { role: "system", content: systemPrompt },
       ...lastDataWithoutLastMessage,
-      { role: "user", content: lastme },
+      { role: "user", content: lastMessageContent },
     ],
     model: "gpt-3.5-turbo",
     stream: true,
