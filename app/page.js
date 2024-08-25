@@ -14,15 +14,15 @@ export default function Home() {
   const sendMessage = async() => {
     setMessages((messages)=> [
       ...messages,
-      {role: "user", content: message}
+      {role: "user", content: message},
       {role: "assistant", content: '' }
   ])
 
   setMessage('')
   const response = fetch('/api/chat', {
-    method: "POST"
+    method: "POST",
     headers: {
-      'Content-Type:', 'application/json'
+      'Content-Type:': 'application/json'
     },
     body: JSON.stringify([...messages, {role: "user", content: message}])
   }).then(async(res)=>{
@@ -34,13 +34,13 @@ export default function Home() {
       if (done){
         return result
       }
-      const text = decoder.decode (value [] new Uint8Array(), {stream: true})
+      const text = decoder.decode (value || new Uint8Array(), {stream: true})
       setMessages((messages)=>{
         let lastMessage = messages[messages.length - 1]
         let otherMessages = messages.slice(0, messages.length - 1)
         return[
           ...otherMessages,
-          {...lastMessage, content, lastMessage.content + text},
+          {...lastMessage, content: lastMessage.content + text},
 
         ]
       })
