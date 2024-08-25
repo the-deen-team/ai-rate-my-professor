@@ -37,17 +37,17 @@ const systemPrompt = `
 export async function POST(req) {
   const data = await req.json();
   const pc = new Pinecone({
-    apiKey: process.env.PINCONE_API_KEY,
+    apiKey: process.env.PINECONE_API_KEY,
   });
   const index = pc.index("rag").namespace("ns1");
   const openai = new OpenAI();
 
-  const text = data(data.length - 1).content;
-  const embedding = await OpenAI.Embeddings.create({
-    model: "text-embedding-3-small",
+  const text = data[data.length - 1].content
+  const embedding = await openai.embeddings.create({
+    model: 'text-embedding-3-small',
     input: text,
-    encoding_format: "float",
-  });
+    encoding_format: 'float',
+  })
 
   const results = await index.query({
     topK: 3,
