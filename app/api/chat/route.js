@@ -80,24 +80,23 @@ export async function POST(req) {
     stream: true,
   });
 
-  const stream = ReadableStream({
+  const stream = new ReadableStream({
     async start(controller) {
-      const encoder = new TextEncoder();
+      const encoder = new TextEncoder()
       try {
         for await (const chunk of completion) {
-          const content = chunk.choices[0]?.delta?.content;
+          const content = chunk.choices[0]?.delta?.content
           if (content) {
-            const text = encoder.encode(content);
-            controller.enqueue(text);
+            const text = encoder.encode(content)
+            controller.enqueue(text)
           }
         }
       } catch (err) {
-        controller.error(err);
+        controller.error(err)
       } finally {
-        controller.close();
+        controller.close()
       }
     },
-  });
-
-  return new NextResponse(stream);
+  })
+  return new NextResponse(stream)
 }
