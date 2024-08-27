@@ -1,25 +1,35 @@
 "use client";
-import { Box, Typography, Stack, TextField, Button, useMediaQuery, useTheme, CssBaseline, Switch } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {
+  Box,
+  Typography,
+  Stack,
+  TextField,
+  Button,
+  useMediaQuery,
+  useTheme,
+  CssBaseline,
+  Switch,
+} from "@mui/material";
+import { useState, useEffect } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const theme = createTheme({
     palette: {
-      mode: darkMode ? 'dark' : 'light',
+      mode: darkMode ? "dark" : "light",
       primary: {
-        main: '#1976d2', // Deep Blue
+        main: "#1976d2", // Deep Blue
       },
       secondary: {
-        main: '#d32f2f', // Red
+        main: "#d32f2f", // Red
       },
     },
     components: {
       MuiTextField: {
         styleOverrides: {
           root: {
-            backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.09)' : '#fff',
+            backgroundColor: darkMode ? "rgba(255, 255, 255, 0.09)" : "#fff",
             borderRadius: 4,
           },
         },
@@ -29,34 +39,35 @@ export default function Home() {
 
   const [messages, setMessages] = useState([
     {
-      role: 'assistant',
-      content: "Hi! I'm the rate my professor support assistant, how can I help you today?"
-    }
+      role: "assistant",
+      content:
+        "Hi! I'm the rate my professor support assistant, how can I help you today?",
+    },
   ]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const sendMessage = async () => {
     // Append the user's message and an empty assistant message
     setMessages((messages) => [
       ...messages,
-      { role: 'user', content: message },
-      { role: 'assistant', content: '' }
+      { role: "user", content: message },
+      { role: "assistant", content: "" },
     ]);
 
-    setMessage(''); // Clear the input message after sending
+    setMessage(""); // Clear the input message after sending
 
     // Fetch request to the API
-    const response = await fetch('/api/chat', {
-      method: 'POST',
+    const response = await fetch("/api/chat", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify([...messages, { role: 'user', content: message }]),
+      body: JSON.stringify([...messages, { role: "user", content: message }]),
     });
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
-    let result = '';
+    let result = "";
 
     const processText = async ({ done, value }) => {
       if (done) return result;
@@ -78,6 +89,12 @@ export default function Home() {
     reader.read().then(processText);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -90,10 +107,10 @@ export default function Home() {
         alignItems="center"
       >
         <Button onClick={() => setDarkMode(!darkMode)} color="primary">
-          {darkMode ? 'Light Mode' : 'Dark Mode'}
+          {darkMode ? "Light Mode" : "Dark Mode"}
         </Button>
         <Stack
-          direction={'column'}
+          direction={"column"}
           width="500px"
           height="700px"
           border="1px solid"
@@ -103,7 +120,7 @@ export default function Home() {
           sx={{ boxShadow: 3, borderRadius: 2 }}
         >
           <Stack
-            direction={'column'}
+            direction={"column"}
             spacing={2}
             flexGrow={1}
             overflow="auto"
@@ -114,32 +131,45 @@ export default function Home() {
                 key={index}
                 display="flex"
                 justifyContent={
-                  message.role === 'assistant' ? 'flex-start' : 'flex-end'
+                  message.role === "assistant" ? "flex-start" : "flex-end"
                 }
                 sx={{ mt: 1 }}
               >
                 <Box
                   bgcolor={
-                    message.role === 'assistant'
-                      ? 'primary.main'
-                      : 'secondary.main'
+                    message.role === "assistant"
+                      ? "primary.main"
+                      : "secondary.main"
                   }
                   color="white"
                   borderRadius={2}
                   p={2}
-                  sx={{ maxWidth: '70%' }}
+                  sx={{ maxWidth: "70%" }}
                 >
-                  <Typography variant="body1">{message.content}</Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ whiteSpace: "pre-wrap" }}
+                    dangerouslySetInnerHTML={{
+                      __html: message.content
+                        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold
+                        .replace(/_(.*?)_/g, "<em>$1</em>") // Italics
+                        .replace(
+                          /\[(.*?)\]\((.*?)\)/g,
+                          '<a href="$2" target="_blank">$1</a>'
+                        ), // Links
+                    }}
+                  />
                 </Box>
               </Box>
             ))}
           </Stack>
-          <Stack direction={'row'} spacing={2}>
+          <Stack direction={"row"} spacing={2}>
             <TextField
               label="Message"
               fullWidth
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <Button variant="contained" onClick={sendMessage}>
               Send
