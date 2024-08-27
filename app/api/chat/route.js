@@ -56,7 +56,7 @@ export async function POST(req) {
   });
 
   let resultString =
-    "\n\nReturned results from vectir db (done automatically):";
+    "\n\nReturned results from vector db (done automatically):";
   results.matches.forEach((match) => {
     resultString += `\n
     Professor: $(match.id)
@@ -76,7 +76,7 @@ export async function POST(req) {
       ...lastDataWithoutLastMessage,
       { role: "user", content: lastMessageContent },
     ],
-    model: "gpt-3.5-turbo",
+    model: "gpt-4o",
     stream: true,
   });
 
