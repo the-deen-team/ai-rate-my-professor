@@ -11,7 +11,7 @@ import {
   ButtonBase,
   Box,
 } from "@mui/material";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
@@ -21,6 +21,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 function Navbar({ theme, setDarkMode, darkMode, showChatbotStatus = true }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [apiKeyValid, setApiKeyValid] = React.useState(true);
+  const { isLoaded } = useUser();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,6 +37,10 @@ function Navbar({ theme, setDarkMode, darkMode, showChatbotStatus = true }) {
       userButtonElement.click();
     }
   };
+
+  if (!isLoaded) {
+    return null;
+  }
 
   return (
     <AppBar position="fixed">
