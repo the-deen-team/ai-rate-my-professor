@@ -5,6 +5,7 @@ import {
   SignedOut,
   SignUp,
   UserButton,
+  useUser,
 } from "@clerk/nextjs";
 import {
   AppBar,
@@ -56,6 +57,7 @@ export default function Home() {
   const [shakeInput, setShakeInput] = useState(false);
   const [apiKeyValid, setApiKeyValid] = useState(false);
   const [isResponding, setIsResponding] = useState(false);
+  const { isLoaded } = useUser();
 
   const messagesEndRef = useRef(null);
 
@@ -193,6 +195,22 @@ export default function Home() {
       },
     },
   });
+
+  if (!isLoaded) {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+        >
+          <CircularProgress />
+        </Box>
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme}>
