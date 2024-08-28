@@ -188,6 +188,8 @@ export default function Home() {
             alignItems: "center",
           }}
         >
+          <Button color="inherit" href="/sign-in">Login</Button>
+          <Button color="inherit" href="/sign-up">Sign Up</Button>
           {apiKeyValid ? (
             <>
               <CheckCircleIcon sx={{ color: "green", mr: 1 }} />
