@@ -20,6 +20,7 @@ import {
   Stack,
   TextField,
   CircularProgress,
+  ButtonBase,
 } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -103,7 +104,7 @@ export default function Home() {
     }
 
     setIsResponding(true);
-    setIsLoading(true); // Start loading spinner
+    setIsLoading(true);
     setMessage("");
     setMessages((messages) => [
       ...messages,
@@ -126,8 +127,8 @@ export default function Home() {
       let result = "";
       reader.read().then(function processText({ done, value }) {
         if (done) {
-          setIsLoading(false); // Stop loading spinner
-          setIsResponding(false); // Response cycle complete
+          setIsLoading(false);
+          setIsResponding(false);
           return result;
         }
         const text = decoder.decode(value || new Int8Array(), { stream: true });
@@ -149,7 +150,7 @@ export default function Home() {
       });
     } catch (error) {
       setIsResponding(false);
-      setIsLoading(false); // Stop loading spinner on error
+      setIsLoading(false);
       setApiKeyValid(false);
     }
   };
@@ -163,14 +164,21 @@ export default function Home() {
     }
   };
 
+  const handleUserButtonClick = () => {
+    const userButtonElement = document.querySelector(".cl-userButtonTrigger");
+    if (userButtonElement) {
+      userButtonElement.click();
+    }
+  };
+
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
       primary: {
-        main: "#1976d2", // Deep Blue
+        main: "#1976d2",
       },
       secondary: {
-        main: "#d32f2f", // Red
+        main: "#d32f2f",
       },
     },
     components: {
@@ -217,7 +225,7 @@ export default function Home() {
             id="menu-appbar"
             anchorEl={anchorEl}
             anchorOrigin={{
-              vertical: "top",
+              vertical: "bottom",
               horizontal: "right",
             }}
             keepMounted
@@ -227,21 +235,27 @@ export default function Home() {
             }}
             open={Boolean(anchorEl)}
             onClose={handleClose}
+            sx={{ mt: 1 }}
           >
-            <MenuItem>
-              <SignedIn>
+            <SignedIn>
+              <MenuItem component={ButtonBase} onClick={handleUserButtonClick}>
                 <UserButton />
-                Manage Profile
-              </SignedIn>
-            </MenuItem>
-            <MenuItem>
+                <Typography variant="body1" sx={{ ml: 2 }}>
+                  Manage Profile
+                </Typography>
+              </MenuItem>
+            </SignedIn>
+            <MenuItem
+              component={ButtonBase}
+              onClick={() => setDarkMode(!darkMode)}
+            >
               <Switch
                 checked={darkMode}
-                onChange={() => setDarkMode(!darkMode)}
                 icon={<Brightness7Icon />}
                 checkedIcon={<Brightness4Icon />}
+                onChange={() => {}}
               />
-              <Typography variant="body1">
+              <Typography variant="body1" sx={{ ml: 2 }}>
                 {darkMode ? "Light Mode" : "Dark Mode"}
               </Typography>
             </MenuItem>
@@ -264,19 +278,19 @@ export default function Home() {
       <Toolbar /> {/* This spacer pushes the content below the navbar */}
       <Box
         width="100%"
-        height="calc(100vh - 64px)" // Adjust height to exclude the navbar height
+        height="calc(100vh - 64px)"
         display="flex"
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        sx={{ overflow: "hidden" }} // Prevent horizontal scrolling
+        sx={{ overflow: "hidden" }}
       >
         <Stack
           direction={"column"}
           width="100%"
-          maxWidth="500px" // Constrain the width to prevent horizontal scrolling
+          maxWidth="500px"
           height="100%"
-          maxHeight="700px" // Constrain the height to prevent vertical scrolling
+          maxHeight="700px"
           border="1px solid"
           borderColor="divider"
           p={2}
