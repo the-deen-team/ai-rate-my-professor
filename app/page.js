@@ -1,5 +1,12 @@
 "use client";
 import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignUp,
+  UserButton,
+} from "@clerk/nextjs";
+import {
   AppBar,
   Toolbar,
   IconButton,
@@ -186,12 +193,17 @@ export default function Home() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Rate My Professor
           </Typography>
-          <Button color="inherit" href="/sign-in">
-            Login
+          <Button color="inherit" href="/">
+            Home
           </Button>
-          <Button color="inherit" href="/sign-up">
-            Sign Up
-          </Button>
+          <SignedOut>
+            <Button color="inherit" href="/sign-in">
+              Login
+            </Button>
+            <Button color="inherit" href="/sign-up">
+              Sign Up
+            </Button>
+          </SignedOut>
           <IconButton
             color="inherit"
             aria-label="settings"
@@ -216,6 +228,12 @@ export default function Home() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
+            <MenuItem>
+              <SignedIn>
+                <UserButton />
+                Manage Profile
+              </SignedIn>
+            </MenuItem>
             <MenuItem>
               <Switch
                 checked={darkMode}
@@ -251,7 +269,7 @@ export default function Home() {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        sx={{ overflow: 'hidden' }} // Prevent horizontal scrolling
+        sx={{ overflow: "hidden" }} // Prevent horizontal scrolling
       >
         <Stack
           direction={"column"}
