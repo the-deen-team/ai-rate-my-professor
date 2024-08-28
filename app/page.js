@@ -22,6 +22,7 @@ import {
   TextField,
   CircularProgress,
   ButtonBase,
+  Modal,
 } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -42,6 +43,57 @@ const shake = keyframes`
   100% { transform: translateX(0); }
 `;
 
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+function ProcessingModal({
+  open,
+  onClose,
+  processingComplete,
+  onConfirm,
+  onCancel,
+}) {
+  return (
+    <Modal open={open} onClose={onClose}>
+      <Box sx={modalStyle}>
+        {processingComplete ? (
+          <>
+            <Typography variant="h6" component="h2">
+              Professor`s Info Scraped Successfully
+            </Typography>
+            <Stack spacing={2} mt={2}>
+              <Button variant="contained" onClick={onConfirm}>
+                Import to Database
+              </Button>
+              <Button variant="outlined" onClick={onCancel}>
+                Cancel
+              </Button>
+            </Stack>
+          </>
+        ) : (
+          <>
+            <Typography variant="h6" component="h2">
+              Processing...
+            </Typography>
+            <Box display="flex" justifyContent="center" mt={2}>
+              <CircularProgress />
+            </Box>
+          </>
+        )}
+      </Box>
+    </Modal>
+  );
+}
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -58,6 +110,10 @@ export default function Home() {
   const [apiKeyValid, setApiKeyValid] = useState(false);
   const [isResponding, setIsResponding] = useState(false);
   const { isLoaded } = useUser();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [processingModalOpen, setProcessingModalOpen] = useState(false);
+  const [processingComplete, setProcessingComplete] = useState(false);
+  const [professorData, setProfessorData] = useState(null);
 
   const messagesEndRef = useRef(null);
 
@@ -167,13 +223,6 @@ export default function Home() {
     }
   };
 
-  const handleUserButtonClick = () => {
-    const userButtonElement = document.querySelector(".cl-userButtonTrigger");
-    if (userButtonElement) {
-      userButtonElement.click();
-    }
-  };
-
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
@@ -212,11 +261,79 @@ export default function Home() {
     );
   }
 
+  const insertDataIntoPinecone = async (professorData) => {
+    try {
+      const response = await fetch("/api/pinecone", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(professorData),
+      });
+      return response.ok;
+    } catch (error) {
+      console.error("Error inserting data into Pinecone:", error);
+      return false;
+    }
+  };
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
+  const handleProcessingModalClose = () => {
+    setProcessingModalOpen(false);
+    setProcessingComplete(false);
+    setProfessorData(null);
+  };
+
+  const handleSubmit = async (url) => {
+    setModalOpen(false);
+    setProcessingModalOpen(true);
+
+    const scrapedData = await scrapeProfessorData(url);
+    if (scrapedData) {
+      setProfessorData(scrapedData);
+      setProcessingComplete(true);
+    } else {
+      // Handle scraping error
+      setProcessingComplete(false);
+    }
+  };
+
+  const handleConfirm = async () => {
+    if (professorData) {
+      const success = await insertDataIntoPinecone(professorData);
+      if (success) {
+        // Data successfully inserted
+        console.log("Data successfully inserted into Pinecone.");
+      } else {
+        // Handle insertion error
+        console.error("Failed to insert data into Pinecone.");
+      }
+    }
+    handleProcessingModalClose();
+  };
+
+  const handleCancel = () => {
+    // Handle cancellation
+    handleProcessingModalClose();
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AppBar position="fixed">
         <Navbar theme={theme} setDarkMode={setDarkMode} darkMode={darkMode} />
+        <ProcessingModal
+          open={processingModalOpen}
+          onClose={handleProcessingModalClose}
+          processingComplete={processingComplete}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
       </AppBar>
       <Toolbar />
       {}
@@ -227,7 +344,7 @@ export default function Home() {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        sx={{ overflow: "hidden" }}
+        sx={{ overflow: "hidden", padding: "0 16px" }}
       >
         <Stack
           direction={"column"}
@@ -271,9 +388,17 @@ export default function Home() {
                   >
                     <Typography
                       variant="body1"
-                      sx={{ whiteSpace: "pre-wrap" }}
+                      sx={{
+                        whiteSpace: "pre-wrap",
+                        wordWrap: "break-word",
+                        overflowWrap: "break-word",
+                      }}
                       dangerouslySetInnerHTML={{
                         __html: message.content
+                          .replace(
+                            /^#### (.*$)/gim,
+                            '<strong style="font-size: 1rem; display: block; margin-top: 8px; margin-bottom: 8px;">$1</strong>'
+                          )
                           .replace(
                             /^### (.*$)/gim,
                             '<strong style="font-size: 1.25rem; display: block; margin-top: 10px; margin-bottom: 10px;">$1</strong>'
@@ -320,6 +445,7 @@ export default function Home() {
                 sx={{
                   animation: shakeInput ? `${shake} 0.5s` : "none",
                   borderColor: shakeInput ? "red" : "primary.main",
+                  maxWidth: "100%",
                   "& .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
                     {
                       borderColor: shakeInput ? "red" : "primary.main",
