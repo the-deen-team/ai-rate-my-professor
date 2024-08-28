@@ -1,41 +1,145 @@
-import {ClerkProvider, SignedIn, SignedOut, SignIn, SignUp } from "@clerk/nextjs";
-import {AppBar, Box, Button, Container, Toolbar, Typography} from '@mui/material'
-import Link from 'next/link'
+"use client";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignUp,
+  UserButton,
+} from "@clerk/nextjs";
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Toolbar,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  Switch,
+  CssBaseline,
+} from "@mui/material";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import SettingsIcon from "@mui/icons-material/Settings";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 export default function SignUpPage() {
-    return (
-        <ClerkProvider>
-        <Container maxWidth="100vw">
-            <AppBar position='static' sx= {{backgroundColor: "#3f51b5"}}>
-                <Toolbar>
-                    <Typography variant='h6' sx={{
-                        flexGrow: 1,
-                    }}>
-                        Rate my professor
-                    </Typography>
-                    <Button color = "inherit" >
-                        <Link href = "/sign-in" passHref>
-                        Login
-                        </Link>
-                    </Button>
-                    <Button color = "inherit" >
-                        <Link href = "/sign-up" passHref>
-                        Sign Up
-                        </Link>
-                    </Button>
-                </Toolbar>
-            </AppBar>
+  const [darkMode, setDarkMode] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const router = useRouter();
 
-            <Box
-                display = "flex"
-                flexDirection= "column"
-                alignItems="center"
-                justifyContent="center"
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? "dark" : "light",
+      primary: {
+        main: "#1976d2", // Deep Blue
+      },
+      secondary: {
+        main: "#d32f2f", // Red
+      },
+    },
+  });
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth="100vw">
+        <AppBar position="fixed">
+          <Toolbar>
+            <Typography
+              variant="h6"
+              sx={{
+                flexGrow: 1,
+              }}
             >
-            <Typography variant= "h4">Sign Up</Typography>
-            <SignUp />
-            </Box>
-        </Container>
-        </ClerkProvider>
-    );
+              Rate My Professor
+            </Typography>
+            <Button color="inherit" href="/">
+              Home
+            </Button>
+            <SignedOut>
+              <Button color="inherit" href="/sign-in">
+                Login
+              </Button>
+              <Button color="inherit" href="/sign-up">
+                Sign Up
+              </Button>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <IconButton
+              color="inherit"
+              aria-label="settings"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+            >
+              <SettingsIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem>
+                <Switch
+                  checked={darkMode}
+                  onChange={() => setDarkMode(!darkMode)}
+                  icon={<Brightness7Icon />}
+                  checkedIcon={<Brightness4Icon />}
+                />
+                <Typography variant="body1">
+                  {darkMode ? "Light Mode" : "Dark Mode"}
+                </Typography>
+              </MenuItem>
+            </Menu>
+          </Toolbar>
+        </AppBar>
+        <Toolbar /> {/* This spacer pushes the content below the navbar */}
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          height="calc(100vh - 64px)"
+          mt={0}
+        >
+          <Typography variant="h4" sx={{ mb: 2 }}>
+            Sign Up
+          </Typography>
+          <SignUp
+            path="/sign-up"
+            routing="path"
+            signInUrl="/sign-in"
+            onSignUp={() => {
+              router.push("/");
+            }}
+          />
+        </Box>
+      </Container>
+    </ThemeProvider>
+  );
 }
