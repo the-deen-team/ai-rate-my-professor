@@ -223,98 +223,123 @@ export default function Home() {
           spacing={3}
           sx={{ boxShadow: 3, borderRadius: 2, overflow: "hidden" }}
         >
-          <Stack
-            direction={"column"}
-            spacing={2}
-            flexGrow={1}
-            overflow="auto"
-            maxHeight="100%"
-          >
-            {messages.map((message, index) => (
-              <Box
-                key={index}
-                display="flex"
-                justifyContent={
-                  message.role === "assistant" ? "flex-start" : "flex-end"
-                }
-                sx={{ mt: 1 }}
-              >
-                <Box
-                  bgcolor={
-                    message.role === "assistant"
-                      ? "primary.main"
-                      : "secondary.main"
-                  }
-                  color="white"
-                  borderRadius={2}
-                  p={2}
-                  sx={{ maxWidth: "70%" }}
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{ whiteSpace: "pre-wrap" }}
-                    dangerouslySetInnerHTML={{
-                      __html: message.content
-                        .replace(
-                          /^### (.*$)/gim,
-                          '<strong style="font-size: 1.25rem; display: block; margin-top: 10px; margin-bottom: 10px;">$1</strong>'
-                        )
-                        .replace(
-                          /^## (.*$)/gim,
-                          '<strong style="font-size: 1.5rem; display: block; margin-top: 12px; margin-bottom: 12px;">$1</strong>'
-                        )
-                        .replace(
-                          /^# (.*$)/gim,
-                          '<strong style="font-size: 2rem; display: block; margin-top: 14px; margin-bottom: 14px;">$1</strong>'
-                        )
-                        // Bold
-                        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-                        // Italics
-                        .replace(/\*(.*?)\*/g, "<em>$1</em>")
-                        // Links
-                        .replace(
-                          /\[(.*?)\]\((.*?)\)/g,
-                          '<a href="$2" target="_blank" style="color: #FFEB3B;">$1</a>'
-                        ),
-                    }}
-                  />
-                  {index === messages.length - 1 &&
-                    isLoading &&
-                    message.role === "assistant" &&
-                    !message.content && (
-                      <CircularProgress size={24} color="inherit" />
-                    )}
-                </Box>
-              </Box>
-            ))}
-            <div ref={messagesEndRef} />
-          </Stack>
-          <Stack direction={"row"} spacing={2}>
-            <TextField
-              label="Message"
-              fullWidth
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-              error={shakeInput}
-              disabled={isResponding}
-              sx={{
-                animation: shakeInput ? `${shake} 0.5s` : "none",
-                borderColor: shakeInput ? "red" : "primary.main",
-                "& .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
-                  {
-                    borderColor: shakeInput ? "red" : "primary.main",
-                  },
-              }}
-            />
-            <Button
-              variant="contained"
-              onClick={sendMessage}
-              disabled={isResponding}
+          <SignedIn>
+            <Stack
+              direction={"column"}
+              spacing={2}
+              flexGrow={1}
+              overflow="auto"
+              maxHeight="100%"
             >
-              Send
-            </Button>
-          </Stack>
+              {messages.map((message, index) => (
+                <Box
+                  key={index}
+                  display="flex"
+                  justifyContent={
+                    message.role === "assistant" ? "flex-start" : "flex-end"
+                  }
+                  sx={{ mt: 1 }}
+                >
+                  <Box
+                    bgcolor={
+                      message.role === "assistant"
+                        ? "primary.main"
+                        : "secondary.main"
+                    }
+                    color="white"
+                    borderRadius={2}
+                    p={2}
+                    sx={{ maxWidth: "70%" }}
+                  >
+                    <Typography
+                      variant="body1"
+                      sx={{ whiteSpace: "pre-wrap" }}
+                      dangerouslySetInnerHTML={{
+                        __html: message.content
+                          .replace(
+                            /^### (.*$)/gim,
+                            '<strong style="font-size: 1.25rem; display: block; margin-top: 10px; margin-bottom: 10px;">$1</strong>'
+                          )
+                          .replace(
+                            /^## (.*$)/gim,
+                            '<strong style="font-size: 1.5rem; display: block; margin-top: 12px; margin-bottom: 12px;">$1</strong>'
+                          )
+                          .replace(
+                            /^# (.*$)/gim,
+                            '<strong style="font-size: 2rem; display: block; margin-top: 14px; margin-bottom: 14px;">$1</strong>'
+                          )
+                          // Bold
+                          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                          // Italics
+                          .replace(/\*(.*?)\*/g, "<em>$1</em>")
+                          // Links
+                          .replace(
+                            /\[(.*?)\]\((.*?)\)/g,
+                            '<a href="$2" target="_blank" style="color: #FFEB3B;">$1</a>'
+                          ),
+                      }}
+                    />
+                    {index === messages.length - 1 &&
+                      isLoading &&
+                      message.role === "assistant" &&
+                      !message.content && (
+                        <CircularProgress size={24} color="inherit" />
+                      )}
+                  </Box>
+                </Box>
+              ))}
+              <div ref={messagesEndRef} />
+            </Stack>
+            <Stack direction={"row"} spacing={2}>
+              <TextField
+                label="Message"
+                fullWidth
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                error={shakeInput}
+                disabled={isResponding}
+                sx={{
+                  animation: shakeInput ? `${shake} 0.5s` : "none",
+                  borderColor: shakeInput ? "red" : "primary.main",
+                  "& .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
+                    {
+                      borderColor: shakeInput ? "red" : "primary.main",
+                    },
+                }}
+              />
+              <Button
+                variant="contained"
+                onClick={sendMessage}
+                disabled={isResponding}
+              >
+                Send
+              </Button>
+            </Stack>
+          </SignedIn>
+
+          <SignedOut>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              height="100%"
+              textAlign="center"
+            >
+              <Typography variant="h6" color="textSecondary">
+                Please sign in to use the chatbot.
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                href="/sign-in"
+                sx={{ mt: 2 }}
+              >
+                Sign In
+              </Button>
+            </Box>
+          </SignedOut>
         </Stack>
       </Box>
     </ThemeProvider>
