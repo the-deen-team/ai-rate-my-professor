@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -32,10 +32,14 @@ function Navbar({ theme, setDarkMode, darkMode, showChatbotStatus = true }) {
   };
 
   const handleUserButtonClick = () => {
-    const userButtonElement = document.querySelector('.cl-userButtonTrigger');
+    const userButtonElement = document.querySelector(".cl-userButtonTrigger");
     if (userButtonElement) {
       userButtonElement.click();
     }
+  };
+
+  const handleUserButtonDirectClick = (e) => {
+    e.stopPropagation(); // Prevent direct clicks on UserButton from triggering its default action
   };
 
   if (!isLoaded) {
@@ -86,7 +90,9 @@ function Navbar({ theme, setDarkMode, darkMode, showChatbotStatus = true }) {
         >
           <SignedIn>
             <MenuItem component={ButtonBase} onClick={handleUserButtonClick}>
-              <UserButton />
+              <div onClick={handleUserButtonDirectClick}>
+                <UserButton />
+              </div>
               <Typography variant="body1" sx={{ ml: 2 }}>
                 Manage Profile
               </Typography>
