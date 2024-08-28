@@ -28,6 +28,7 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Navbar from "@/app/components/navbar";
 
 export default function SignInPage() {
   const [darkMode, setDarkMode] = useState(false);
@@ -59,71 +60,15 @@ export default function SignInPage() {
       <CssBaseline />
       <Container maxWidth="100vw">
         <AppBar position="fixed">
-          <Toolbar>
-            <Typography
-              variant="h6"
-              sx={{
-                flexGrow: 1,
-              }}
-            >
-              Rate My Professor
-            </Typography>
-            <Button color="inherit" href="/">
-              Home
-            </Button>
-            <SignedOut>
-              <Button color="inherit" href="/sign-in">
-                Login
-              </Button>
-              <Button color="inherit" href="/sign-up">
-                Sign Up
-              </Button>
-            </SignedOut>
-            <IconButton
-              color="inherit"
-              aria-label="settings"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-            >
-              <SettingsIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem>
-                <SignedIn>
-                  <UserButton />
-                  Manage Profile
-                </SignedIn>
-              </MenuItem>
-              <MenuItem>
-                <Switch
-                  checked={darkMode}
-                  onChange={() => setDarkMode(!darkMode)}
-                  icon={<Brightness7Icon />}
-                  checkedIcon={<Brightness4Icon />}
-                />
-                <Typography variant="body1">
-                  {darkMode ? "Light Mode" : "Dark Mode"}
-                </Typography>
-              </MenuItem>
-            </Menu>
-          </Toolbar>
+          <Navbar
+            theme={theme}
+            setDarkMode={setDarkMode}
+            darkMode={darkMode}
+            showChatbotStatus={false}
+          />
         </AppBar>
-        <Toolbar /> {/* This spacer pushes the content below the navbar */}
+        <Toolbar />
+        {}
         <Box
           display="flex"
           flexDirection="column"
