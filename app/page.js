@@ -1,23 +1,27 @@
 "use client";
 import {
-  Box,
+  AppBar,
+  Toolbar,
+  IconButton,
   Typography,
+  Button,
+  Box,
+  Menu,
+  MenuItem,
+  Switch,
+  CssBaseline,
   Stack,
   TextField,
-  Button,
-  useMediaQuery,
-  useTheme,
-  CssBaseline,
-  Switch,
-  IconButton,
   CircularProgress,
 } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import MenuIcon from "@mui/icons-material/Menu";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { keyframes } from "@emotion/react";
 
 const shake = keyframes`
@@ -30,6 +34,7 @@ const shake = keyframes`
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -74,6 +79,14 @@ export default function Home() {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const sendMessage = async () => {
     if (!message.trim()) {
@@ -168,53 +181,89 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <AppBar position="fixed">
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Rate My Professor
+          </Typography>
+          <Button color="inherit" href="/sign-in">
+            Login
+          </Button>
+          <Button color="inherit" href="/sign-up">
+            Sign Up
+          </Button>
+          <IconButton
+            color="inherit"
+            aria-label="settings"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+          >
+            <SettingsIcon />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem>
+              <Switch
+                checked={darkMode}
+                onChange={() => setDarkMode(!darkMode)}
+                icon={<Brightness7Icon />}
+                checkedIcon={<Brightness4Icon />}
+              />
+              <Typography variant="body1">
+                {darkMode ? "Light Mode" : "Dark Mode"}
+              </Typography>
+            </MenuItem>
+            <MenuItem>
+              {apiKeyValid ? (
+                <>
+                  <CheckCircleIcon sx={{ color: "green", mr: 1 }} />
+                  <Typography variant="body1">Chatbot Online</Typography>
+                </>
+              ) : (
+                <>
+                  <CancelIcon sx={{ color: "red", mr: 1 }} />
+                  <Typography variant="body1">Chatbot Offline</Typography>
+                </>
+              )}
+            </MenuItem>
+          </Menu>
+        </Toolbar>
+      </AppBar>
+      <Toolbar /> {/* This spacer pushes the content below the navbar */}
       <Box
-        width="100vw"
-        height="100vh"
+        width="100%"
+        height="calc(100vh - 64px)" // Adjust height to exclude the navbar height
         display="flex"
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
+        sx={{ overflow: 'hidden' }} // Prevent horizontal scrolling
       >
-        <Button onClick={() => setDarkMode(!darkMode)} color="primary">
-          {darkMode ? "Light Mode" : "Dark Mode"}
-        </Button>
-        <Box
-          sx={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Button color="inherit" href="/sign-in">Login</Button>
-          <Button color="inherit" href="/sign-up">Sign Up</Button>
-          {apiKeyValid ? (
-            <>
-              <CheckCircleIcon sx={{ color: "green", mr: 1 }} />
-              <Typography variant="body2" sx={{ color: "green" }}>
-                Online
-              </Typography>
-            </>
-          ) : (
-            <>
-              <CancelIcon sx={{ color: "red", mr: 1 }} />
-              <Typography variant="body2" sx={{ color: "red" }}>
-                Offline
-              </Typography>
-            </>
-          )}
-        </Box>
         <Stack
           direction={"column"}
-          width="500px"
-          height="700px"
+          width="100%"
+          maxWidth="500px" // Constrain the width to prevent horizontal scrolling
+          height="100%"
+          maxHeight="700px" // Constrain the height to prevent vertical scrolling
           border="1px solid"
           borderColor="divider"
           p={2}
           spacing={3}
-          sx={{ boxShadow: 3, borderRadius: 2 }}
+          sx={{ boxShadow: 3, borderRadius: 2, overflow: "hidden" }}
         >
           <Stack
             direction={"column"}
@@ -248,7 +297,6 @@ export default function Home() {
                     sx={{ whiteSpace: "pre-wrap" }}
                     dangerouslySetInnerHTML={{
                       __html: message.content
-                        // Headings
                         .replace(
                           /^### (.*$)/gim,
                           '<strong style="font-size: 1.25rem; display: block; margin-top: 10px; margin-bottom: 10px;">$1</strong>'
